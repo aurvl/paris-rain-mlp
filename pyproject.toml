@@ -1,0 +1,23 @@
+[project]
+name = "paris-rain-mlp"
+version = "0.1.0"
+description = "Educational MLP predicting rain in Paris from seven days of weather data."
+requires-python = ">=3.11"
+dependencies = [
+  "numpy>=1.26,<3",
+  "pandas>=2.2,<3",
+  "requests>=2.31,<3",
+  "scikit-learn>=1.7,<2",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+
