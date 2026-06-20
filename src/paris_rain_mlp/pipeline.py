@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
-from datetime import UTC, datetime
 import json
 import math
+from dataclasses import asdict, dataclass
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -384,6 +384,8 @@ def export_browser_artifact(
     config: ModelConfig,
     seed: int,
     metrics: dict[str, Any],
+    verification_features: np.ndarray,
+    verification_probabilities: np.ndarray,
 ) -> None:
     """Export scaler, dense layers, calibration, and metadata for TypeScript inference."""
 
@@ -436,6 +438,10 @@ def export_browser_artifact(
             "intercept": float(calibrator.intercept_[0]),
         },
         "metrics": metrics,
+        "verification": {
+            "features": verification_features.tolist(),
+            "calibratedProbabilities": verification_probabilities.tolist(),
+        },
         "disclaimer": "Educational model; not an official weather forecast.",
     }
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -629,6 +635,8 @@ def run_experiment(project_root: Path) -> None:
             "test_uncalibrated": test_uncalibrated_metrics,
             "test_calibrated": test_calibrated_metrics,
         },
+        test_features.tail(5).to_numpy(dtype=float),
+        calibrated_test[-5:],
     )
     write_reports(project_root / "reports", experiment)
 

@@ -1,10 +1,10 @@
 # Paris Rain MLP
 
-Educational multilayer perceptron that estimates the probability of meaningful rain in Paris tomorrow from the seven
-previous completed days of weather observations.
+Machine-learning project that estimates the probability of meaningful rain in Paris tomorrow from the seven previous
+completed days of weather observations.
 
-The model is designed for a portfolio blog widget. Training runs offline in Python; browser inference will use the
-small exported JSON artifact without a Python server or a JavaScript ML framework.
+The repository covers data acquisition, temporal feature engineering, baseline comparison, MLP architecture selection,
+probability calibration, locked out-of-time evaluation, and portable model export.
 
 ## Temporal protocol
 
@@ -21,6 +21,7 @@ architecture selection and probability calibration. The 2025 test period is eval
 
 ```powershell
 python train.py
+python verify_artifact.py
 ```
 
 Generated outputs:
@@ -31,11 +32,10 @@ Generated outputs:
 
 Raw Open-Meteo data is cached under `data/raw/` and intentionally ignored by Git.
 
-## Runtime contract
+## Portable inference contract
 
-The future widget must fetch the same seven daily variables, order the previous seven days from oldest to newest,
+Any inference client must provide the same seven daily variables, order the previous seven days from oldest to newest,
 derive target-date seasonality, standardize with the exported scaler, run each dense layer, and apply the exported
 sigmoid calibration.
 
 This is a pedagogical model, not an official weather forecast.
-
